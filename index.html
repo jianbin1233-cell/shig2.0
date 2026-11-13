@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10111a"><title>拾光 · Notes</title>
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{color-scheme:dark;--bg:#10111a;--panel:rgba(255,255,255,.075);--panel2:rgba(255,255,255,.11);--line:rgba(255,255,255,.12);--text:#f4f3fb;--muted:#a6a5b7;--accent:#a99cff;--mint:#80ddd0;--shadow:0 18px 55px rgba(0,0,0,.28)}
+:root[data-theme="light"]{color-scheme:light;--bg:#f2f3f8;--panel:rgba(255,255,255,.68);--panel2:rgba(255,255,255,.88);--line:rgba(35,38,60,.09);--text:#242538;--muted:#77798d;--accent:#7767df;--mint:#37a99b;--shadow:0 18px 55px rgba(42,45,75,.10)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,rgba(125,110,255,.20),transparent 34%),radial-gradient(ellipse at 95% 30%,rgba(91,212,198,.12),transparent 30%),var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}button{cursor:pointer;color:inherit}.app{max-width:760px;margin:auto;padding:calc(env(safe-area-inset-top) + 22px) 20px calc(112px + env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}.brand{display:flex;gap:12px;align-items:center}.logo{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,#a99cff,#6bd7ca);display:grid;place-items:center;color:#171827;font-weight:900;font-size:20px;box-shadow:0 8px 28px #8b7cff44}.brand strong{font-size:20px;letter-spacing:.5px}.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:2px;margin-top:2px}.iconbtn{border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(22px);width:42px;height:42px;border-radius:15px;font-size:18px}
+.greeting{margin:8px 0 22px}.eyebrow{color:var(--accent);font-size:11px;letter-spacing:2.4px;font-weight:700}.greeting h1{font-size:32px;line-height:1.2;margin:9px 0 7px;letter-spacing:-1px}.greeting p{color:var(--muted);margin:0;font-size:13px}
+.search{display:flex;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:0 15px;height:52px;backdrop-filter:blur(24px);margin-bottom:20px}.search input{border:0;outline:0;background:transparent;color:var(--text);width:100%}.search span{color:var(--muted)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:25px}.stat{padding:16px 17px;border:1px solid var(--line);border-radius:20px;background:var(--panel);backdrop-filter:blur(24px)}.stat b{font-size:25px;display:block}.stat span{color:var(--muted);font-size:12px}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:25px 2px 13px}.sectionhead h2{font-size:16px;margin:0}.subtle{color:var(--muted);font-size:12px}
+.chips{display:flex;gap:8px;overflow:auto;padding:2px 0 7px;scrollbar-width:none}.chip{white-space:nowrap;border:1px solid var(--line);background:var(--panel);border-radius:30px;padding:8px 13px;color:var(--muted);font-size:12px}.chip.active{background:linear-gradient(120deg,#a99cff33,#78ddd033);border-color:#a99cff88;color:var(--text)}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:12px}.note{position:relative;min-height:158px;padding:17px;border-radius:22px;border:1px solid var(--line);background:linear-gradient(145deg,var(--panel2),var(--panel));backdrop-filter:blur(25px);box-shadow:var(--shadow);overflow:hidden;animation:rise .35s ease both}.note:before{content:"";position:absolute;width:100px;height:100px;border-radius:50%;background:var(--glow,rgba(169,156,255,.14));filter:blur(24px);right:-30px;top:-35px}.note h3{font-size:15px;margin:0 0 9px;position:relative}.note p{font-size:12px;line-height:1.65;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;position:relative;white-space:pre-wrap}.notefoot{display:flex;justify-content:space-between;align-items:center;margin-top:17px;color:var(--muted);font-size:10px;position:relative}.pin{color:var(--accent)}
+.empty{grid-column:1/-1;text-align:center;padding:45px 20px;color:var(--muted);border:1px dashed var(--line);border-radius:22px}.empty b{display:block;color:var(--text);margin:10px}
+.fab{position:fixed;right:max(22px,calc((100vw - 720px)/2));bottom:calc(100px + env(safe-area-inset-bottom));width:58px;height:58px;border:0;border-radius:21px;background:linear-gradient(135deg,#b5a8ff,#70ddd0);color:#171827;font-size:30px;box-shadow:0 14px 38px #8e80ff55;z-index:5}
+.nav{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(92%,520px);height:68px;border-radius:24px;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 45%,transparent);backdrop-filter:blur(30px) saturate(170%);box-shadow:0 15px 50px #0003;display:flex;justify-content:space-around;align-items:center;z-index:8}.nav button{border:0;background:none;color:var(--muted);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:58px}.nav button i{font-style:normal;font-size:20px}.nav button.active{color:var(--accent)}.nav .newnav{width:48px;height:48px;border-radius:17px;background:linear-gradient(135deg,#b5a8ff,#70ddd0);color:#171827;font-size:25px}
+.overlay{position:fixed;inset:0;background:#05060bb8;backdrop-filter:blur(10px);z-index:20;display:none;align-items:flex-end;justify-content:center}.overlay.show{display:flex}.sheet{width:min(100%,760px);max-height:92dvh;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:28px 28px 0 0;padding:22px 20px calc(28px + env(safe-area-inset-bottom));box-shadow:0 -20px 70px #0005}.sheethead{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.sheethead h2{font-size:19px;margin:0}.close{border:0;background:var(--panel);border-radius:12px;width:36px;height:36px}.field{display:block;margin:14px 0}.field label{display:block;color:var(--muted);font-size:12px;margin:0 0 8px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--text);padding:13px;outline:0}.field textarea{min-height:180px;resize:vertical;line-height:1.7}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}.btn{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:11px 15px;font-size:13px}.btn.primary{background:linear-gradient(120deg,#a99cff,#70ddd0);color:#171827;border:0;font-weight:700}.btn.danger{color:#ff929d}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar .btn{padding:9px 11px}
+.listrow{display:flex;align-items:center;justify-content:space-between;padding:14px 4px;border-bottom:1px solid var(--line);gap:10px}.listrow strong{font-size:13px}.listrow small{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);padding:11px 16px;border-radius:14px;background:#252638;color:#fff;font-size:12px;z-index:40;opacity:0;pointer-events:none;transition:.25s}.toast.show{opacity:1}
+.preview{background:var(--panel);border:1px solid var(--line);padding:18px;border-radius:16px;white-space:pre-wrap;line-height:1.7;max-height:35vh;overflow:auto}
+@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+@media(max-width:430px){.app{padding-left:16px;padding-right:16px}.notes{gap:10px}.note{padding:14px;min-height:155px}.greeting h1{font-size:29px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><div class="logo">拾</div><div><strong>拾光</strong><small>NOTES · KEEP YOUR MOMENTS</small></div></div>
+    <button class="iconbtn" id="themeBtn" aria-label="切换主题">◐</button>
+  </header>
+  <section class="greeting"><div class="eyebrow">YOUR QUIET SPACE</div><h1 id="hello">把灵感，留在此刻。</h1><p id="today"></p></section>
+  <div class="search"><span>⌕</span><input id="search" placeholder="搜索标题、内容或标签…"><span>⌘ K</span></div>
+  <section class="stats"><div class="stat"><b id="totalCount">0</b><span>全部便签</span></div><div class="stat"><b id="monthCount">0</b><span>本月新记录</span></div></section>
+  <div class="sectionhead"><h2 id="listTitle">最近记录</h2><span class="subtle" id="listHint">按时间排序</span></div>
+  <div class="chips" id="filters"></div>
+  <main class="notes" id="notes"></main>
+</div>
+<button class="fab" id="addBtn" aria-label="新建便签">＋</button>
+<nav class="nav">
+  <button class="active" data-tab="home"><i>⌂</i>首页</button>
+  <button data-tab="notes"><i>▤</i>便签</button>
+  <button class="newnav" id="navAdd">＋</button>
+  <button data-tab="archive"><i>▣</i>归档</button>
+  <button data-tab="mine"><i>◉</i>我的</button>
+</nav>
+<div class="overlay" id="editor">
+ <section class="sheet">
+  <div class="sheethead"><h2 id="editorTitle">新建便签</h2><button class="close" data-close="editor">✕</button></div>
+  <div class="field"><label>标题</label><input id="noteTitle" maxlength="100" placeholder="给这份记录一个名字"></div>
+  <div class="field"><label>正文</label><textarea id="noteBody" placeholder="写下此刻的想法…"></textarea></div>
+  <div class="field"><label>分类</label><input id="noteCategory" list="categoryList" placeholder="例如：灵感、工作、生活"><datalist id="categoryList"></datalist></div>
+  <div class="field"><label>添加图片</label><input id="noteImages" type="file" accept="image/*" multiple></div>
+  <div id="imagePreview" class="subtle"></div>
+  <div class="actions"><button class="btn" id="pinBtn">☆ 置顶</button><button class="btn" id="favoriteBtn">♡ 收藏</button><button class="btn primary" id="saveBtn">保存便签</button></div>
+  <div class="actions" id="existingActions" style="display:none"><button class="btn" id="shareBtn">分享 / 导出</button><button class="btn" id="archiveBtn">归档</button><button class="btn danger" id="deleteBtn">移入回收站</button></div>
+ </section>
+</div>
+<div class="overlay" id="share">
+ <section class="sheet">
+  <div class="sheethead"><h2>分享这份记录</h2><button class="close" data-close="share">✕</button></div>
+  <p class="subtle">选择你喜欢的形式，分享前可以预览内容。</p>
+  <div class="preview" id="sharePreview"></div>
+  <div class="actions"><button class="btn primary" id="pdfBtn">导出 PDF</button><button class="btn" id="imageBtn">生成图片</button><button class="btn" id="textShareBtn">分享文字</button><button class="btn" id="copyBtn">复制文字</button></div>
+ </section>
+</div>
+<div class="overlay" id="settings">
+ <section class="sheet">
+  <div class="sheethead"><h2>拾光设置</h2><button class="close" data-close="settings">✕</button></div>
+  <div class="listrow"><div><strong>外观主题</strong><small>浅色 / 深色 / 跟随系统</small></div><select id="themeSelect" class="btn"><option value="dark">深色</option><option value="light">浅色</option><option value="system">跟随系统</option></select></div>
+  <div class="listrow"><div><strong>应用锁</strong><small>使用设备生物识别能力验证</small></div><button class="btn" id="biometricBtn">设置指纹</button></div>
+  <div class="listrow"><div><strong>隐藏便签</strong><small>查看或管理隐藏的记录</small></div><button class="btn" id="hiddenBtn">管理</button></div>
+  <div class="listrow"><div><strong>回收站</strong><small>恢复误删的便签</small></div><button class="btn" id="trashBtn">打开</button></div>
+  <div class="listrow"><div><strong>数据备份</strong><small>导出全部便签及图片数据</small></div><button class="btn" id="backupBtn">导出 JSON</button></div>
+  <div class="listrow"><div><strong>恢复备份</strong><small>从之前导出的 JSON 恢复</small></div><button class="btn" id="restoreBtn">选择文件</button></div>
+  <div class="listrow"><div><strong>提醒功能</strong><small>为便签设置本地通知</small></div><button class="btn" id="reminderBtn">创建提醒</button></div>
+  <div class="listrow"><div><strong>关于拾光</strong><small>2.0 · 记录灵感，珍藏时光</small></div><span class="subtle">✦</span></div>
+  <input type="file" id="restoreFile" accept="application/json" hidden>
+ </section>
+</div>
+<div class="overlay" id="trash">
+ <section class="sheet"><div class="sheethead"><h2>回收站</h2><button class="close" data-close="trash">✕</button></div><div id="trashList"></div></section>
+</div>
+<div class="overlay" id="hidden">
+ <section class="sheet"><div class="sheethead"><h2>隐藏便签</h2><button class="close" data-close="hidden">✕</button></div><div id="hiddenList"></div></section>
+</div>
+<div class="toast" id="toast"></div>
+<script type="module">
+import { Share } from '@capacitor/share';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { BiometricAuth } from '@capacitor-community/biometric';
+import { jsPDF } from 'jspdf';
+
+const $=id=>document.getElementById(id);
+const KEY='shiguang_notes_v2';
+let data=load(), activeTab='home', activeFilter='全部', editing=null, pinned=false, favorite=false, stagedImages=[];
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{notes:[],theme:'dark',biometric:false}}catch{return {notes:[],theme:'dark',biometric:false}}}
+function persist(){localStorage.setItem(KEY,JSON.stringify(data));render()}
+function toast(s){$('toast').textContent=s;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2200)}
+function vibrate(){Haptics.impact({style:ImpactStyle.Light}).catch(()=>{})}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function dateText(t){return new Intl.DateTimeFormat('zh-CN',{month:'short',day:'numeric'}).format(new Date(t))}
+function allCategories(){return [...new Set(data.notes.filter(n=>!n.deleted&&!n.archived).map(n=>n.category).filter(Boolean))]}
+function render(){
+ const q=$('search').value.trim().toLowerCase();
+ let arr=data.notes.filter(n=>!n.deleted&&!n.archived&&!n.hidden);
+ if(activeTab==='archive')arr=data.notes.filter(n=>n.archived&&!n.deleted&&!n.hidden);
+ if(activeTab==='mine')arr=[];
+ if(activeFilter!=='全部')arr=arr.filter(n=>n.category===activeFilter);
+ if(q)arr=arr.filter(n=>(n.title+' '+n.body+' '+n.category).toLowerCase().includes(q));
+ arr.sort((a,b)=>(b.pinned-a.pinned)||((b.updated||0)-(a.updated||0)));
+ $('totalCount').textContent=data.notes.filter(n=>!n.deleted&&!n.hidden).length;
+ const now=new Date();$('monthCount').textContent=data.notes.filter(n=>{const d=new Date(n.created);return !n.deleted&&d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()}).length;
+ $('filters').innerHTML=['全部',...allCategories()].map(c=>`<button class="chip ${activeFilter===c?'active':''}" data-filter="${esc(c)}">${esc(c)}</button>`).join('');
+ $('listTitle').textContent=activeTab==='archive'?'归档记录':activeTab==='mine'?'个人空间':'最近记录';
+ $('listHint').textContent=activeTab==='archive'?'已归档':'按时间排序';
+ if(activeTab==='mine'){
+  $('notes').innerHTML=`<div class="empty"><div style="font-size:30px">✧</div><b>拾光设置与数据管理</b><p>管理主题、隐私、提醒和备份。</p><button class="btn primary" id="openSettings">打开设置</button></div>`;
+  $('openSettings').onclick=()=>$('settings').classList.add('show');return;
+ }
+ $('notes').innerHTML=arr.length?arr.map(n=>`<article class="note" data-id="${n.id}" style="--glow:${n.color||'rgba(169,156,255,.14)'}"><h3>${n.pinned?'⌁ ':''}${esc(n.title||'未命名便签')}${n.favorite?'　♡':''}</h3><p>${esc(n.body||'')}</p><div class="notefoot"><span>${esc(n.category||'未分类')}</span><span>${dateText(n.updated||n.created)}</span></div></article>`).join(''):`<div class="empty"><div style="font-size:30px">✧</div><b>这里还很安静</b><p>点下方的 ＋，记录第一份灵感。</p></div>`;
+}
+function openEditor(n=null){editing=n?.id||null;pinned=!!n?.pinned;favorite=!!n?.favorite;stagedImages=n?.images?[...n.images]:[];$('editorTitle').textContent=n?'编辑便签':'新建便签';$('noteTitle').value=n?.title||'';$('noteBody').value=n?.body||'';$('noteCategory').value=n?.category||'';$('pinBtn').textContent=pinned?'⌁ 已置顶':'☆ 置顶';$('favoriteBtn').textContent=favorite?'♥ 已收藏':'♡ 收藏';$('existingActions').style.display=n?'flex':'none';$('imagePreview').textContent=stagedImages.length?`已添加 ${stagedImages.length} 张图片`:'暂未添加图片';$('editor').classList.add('show')}
+function close(id){$(id).classList.remove('show')}
+function current(){return data.notes.find(n=>n.id===editing)}
+function save(){const title=$('noteTitle').value.trim(),body=$('noteBody').value.trim();if(!title&&!body){toast('先写点内容再保存吧');return}const now=Date.now();let n=current();if(!n){n={id:crypto.randomUUID(),created:now};data.notes.push(n)}Object.assign(n,{title,body,category:$('noteCategory').value.trim(),updated:now,pinned,favorite,images:stagedImages,deleted:false});persist();close('editor');toast('已保存到拾光');vibrate()}
+$('addBtn').onclick=$('navAdd').onclick=()=>openEditor();$('saveBtn').onclick=save;
+$('pinBtn').onclick=()=>{pinned=!pinned;$('pinBtn').textContent=pinned?'⌁ 已置顶':'☆ 置顶'};
+$('favoriteBtn').onclick=()=>{favorite=!favorite;$('favoriteBtn').textContent=favorite?'♥ 已收藏':'♡ 收藏'};
+$('notes').addEventListener('click',e=>{const el=e.target.closest('.note');if(el){const n=data.notes.find(x=>x.id===el.dataset.id);openEditor(n)}});
+$('filters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(b){activeFilter=b.dataset.filter;render()}});
+$('search').addEventListener('input',render);
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));activeFilter='全部';render()});
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>close(b.dataset.close));
+$('noteImages').onchange=async e=>{for(const f of [...e.target.files]){if(!f.type.startsWith('image/'))continue;if(f.size>3*1024*1024){toast('单张图片请控制在 3MB 以内');continue}stagedImages.push(await fileToData(f))}$('imagePreview').textContent=`已添加 ${stagedImages.length} 张图片`;e.target.value=''};
+function fileToData(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)})}
+$('archiveBtn').onclick=()=>{const n=current();if(n){n.archived=true;n.updated=Date.now();persist();close('editor');toast('已归档')}}
+$('deleteBtn').onclick=()=>{const n=current();if(n){n.deleted=true;n.deletedAt=Date.now();persist();close('editor');toast('已移入回收站')}}
+$('shareBtn').onclick=()=>{const n=current();if(!n)return;$('sharePreview').textContent=(n.title||'未命名便签')+'\\n\\n'+n.body;$('share').classList.add('show')};
+function downloadBlob(blob,name){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1500)}
+$('pdfBtn').onclick=()=>{const n=current();if(!n)return;const doc=new jsPDF();doc.setFont('helvetica');doc.setFontSize(18);doc.text(n.title||'拾光便签',18,22);doc.setFontSize(11);const lines=doc.splitTextToSize(n.body||'',174);doc.text(lines,18,36);doc.setFontSize(9);doc.text('拾光 · Notes',18,285);doc.save('拾光-'+(n.title||'便签')+'.pdf');toast('PDF 已生成')};
+$('imageBtn').onclick=()=>{const n=current();if(!n)return;const c=document.createElement('canvas'),ctx=c.getContext('2d'),w=900,pad=64;ctx.font='bold 42px sans-serif';const titleLines=wrap(ctx,n.title||'拾光便签',w-pad*2);ctx.font='28px sans-serif';const bodyLines=wrap(ctx,n.body||'',w-pad*2);c.width=w;c.height=pad*2+titleLines.length*58+35+bodyLines.length*46+100;const x=c.getContext('2d');const g=x.createLinearGradient(0,0,w,c.height);g.addColorStop(0,'#f7f5ff');g.addColorStop(1,'#e9f8f5');x.fillStyle=g;x.fillRect(0,0,w,c.height);x.fillStyle='#28263a';x.font='bold 42px sans-serif';let y=pad+42;titleLines.forEach(t=>{x.fillText(t,pad,y);y+=58});y+=28;x.font='28px sans-serif';x.fillStyle='#55546a';bodyLines.forEach(t=>{x.fillText(t,pad,y);y+=46});x.fillStyle='#858397';x.font='20px sans-serif';x.fillText('拾光 · NOTES',pad,c.height-45);c.toBlob(b=>downloadBlob(b,'拾光-'+(n.title||'便签')+'.png'))};
+function wrap(ctx,s,max){let out=[];for(const para of String(s).split('\\n')){let line='';for(const ch of para){if(ctx.measureText(line+ch).width>max&&line){out.push(line);line=ch}else line+=ch}out.push(line)}return out}
+$('textShareBtn').onclick=async()=>{const n=current();if(!n)return;const text=(n.title||'')+'\\n\\n'+(n.body||'');try{await Share.share({title:n.title||'拾光便签',text,dialogTitle:'分享便签'})}catch{await navigator.clipboard?.writeText(text);toast('已复制文字')}}
+$('copyBtn').onclick=async()=>{const n=current();if(!n)return;await navigator.clipboard.writeText((n.title||'')+'\\n\\n'+(n.body||''));toast('已复制')}
+$('themeBtn').onclick=()=>{const next=data.theme==='dark'?'light':'dark';data.theme=next;applyTheme();persistTheme()};
+function applyTheme(){const t=data.theme==='system'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):data.theme;document.documentElement.dataset.theme=t;$('themeSelect').value=data.theme}
+function persistTheme(){localStorage.setItem(KEY,JSON.stringify(data));applyTheme()}
+$('themeSelect').onchange=e=>{data.theme=e.target.value;persistTheme()};
+$('backupBtn').onclick=()=>downloadBlob(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'拾光备份-'+new Date().toISOString().slice(0,10)+'.json');
+$('restoreBtn').onclick=()=>$('restoreFile').click();
+$('restoreFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!Array.isArray(d.notes))throw Error();if(confirm('恢复备份会覆盖当前本地数据，是否继续？')){data=d;persistTheme();persist();toast('备份恢复完成')}}catch{toast('备份文件格式不正确')}e.target.value=''};
+$('trashBtn').onclick=()=>{renderTrash();$('trash').classList.add('show')};
+function renderTrash(){$('trashList').innerHTML=data.notes.filter(n=>n.deleted).map(n=>`<div class="listrow"><div><strong>${esc(n.title||'未命名便签')}</strong><small>已移入回收站</small></div><button class="btn" data-restore="${n.id}">恢复</button></div>`).join('')||'<p class="subtle">回收站为空</p>'}
+$('trashList').onclick=e=>{const id=e.target.dataset.restore;if(id){const n=data.notes.find(x=>x.id===id);n.deleted=false;delete n.deletedAt;persist();renderTrash();toast('已恢复')}};
+$('hiddenBtn').onclick=()=>{renderHidden();$('hidden').classList.add('show')};
+function renderHidden(){$('hiddenList').innerHTML=data.notes.filter(n=>n.hidden&&!n.deleted).map(n=>`<div class="listrow"><strong>${esc(n.title||'未命名便签')}</strong><button class="btn" data-unhide="${n.id}">取消隐藏</button></div>`).join('')||'<p class="subtle">没有隐藏便签</p>'}
+$('hiddenList').onclick=e=>{const id=e.target.dataset.unhide;if(id){data.notes.find(n=>n.id===id).hidden=false;persist();renderHidden()}}
+$('biometricBtn').onclick=async()=>{try{const avail=await BiometricAuth.checkBiometry();if(!avail.isAvailable){toast('设备暂不支持可用的生物识别');return}const r=await BiometricAuth.verifyIdentity({reason:'验证身份以保护拾光便签'});if(r.verified){data.biometric=true;localStorage.setItem(KEY,JSON.stringify(data));toast('本次验证成功。请注意：应用启动锁仍需原生入口接入。')}}catch(e){toast('验证未完成，请检查设备指纹设置')}};
+$('reminderBtn').onclick=async()=>{const title=prompt('提醒标题');if(!title)return;const when=prompt('输入提醒时间，例如 2026-12-01 09:00');if(!when)return;const d=new Date(when.replace(' ','T'));if(isNaN(d)||d<=new Date()){toast('请输入未来的有效时间');return}try{await LocalNotifications.requestPermissions();await LocalNotifications.schedule({notifications:[{id:Math.floor(Math.random()*1000000),title:'拾光提醒',body:title,schedule:{at:d}}]});toast('提醒已创建')}catch{toast('提醒权限未开启或当前环境不支持')}};
+$('today').textContent=new Intl.DateTimeFormat('zh-CN',{dateStyle:'full'}).format(new Date());
+$('categoryList').innerHTML=['工作','生活','灵感','学习','购物','其他'].map(x=>`<option>${x}</option>`).join('');
+applyTheme();render();
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>

@@ -1,0 +1,16 @@
+{
+  "appId": "com.shiguang.notes",
+  "appName": "拾光",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_icon",
+      "iconColor": "#8B7CFF"
+    },
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "backgroundColor": "#10111A"
+    }
+  }
+}
