@@ -6,10 +6,27 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Drop invalid packages
+        run: |
+          node -e 'const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8")); for (const k of ["dependencies","devDependencies"]) { if(!p[k]) continue; delete p[k]["@capacitor-community/biometric"]; } fs.writeFileSync("package.json", JSON.stringify(p,null,2)+"\n");'
+
+      - name: Install dependencies
+        run: npm install --no-package-lock
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
 
       - name: Use preinstalled Android SDK
         run: |
@@ -23,38 +40,6 @@ jobs:
           echo "ANDROID_HOME=$SDK" >> "$GITHUB_ENV"
           echo "ANDROID_SDK_ROOT=$SDK" >> "$GITHUB_ENV"
           echo "$SDK/platform-tools" >> "$GITHUB_PATH"
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Drop invalid packages
-        run: |
-          node -e '
-            const fs = require("fs");
-            const p = JSON.parse(fs.readFileSync("package.json","utf8"));
-            for (const key of ["dependencies","devDependencies"]) {
-              if (!p[key]) continue;
-              delete p[key]["@capacitor-community/biometric"];
-            }
-            fs.writeFileSync("package.json", JSON.stringify(p, null, 2) + "\n");
-          '
-
-      - name: Install dependencies
-        run: npm install --no-package-lock
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-
-      - name: Use preinstalled Android SDK
-        run: |
-          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> "$GITHUB_ENV"
-          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> "$GITHUB_PATH"
-          echo "$ANDROID_SDK_ROOT/platform-tools" >> "$GITHUB_PATH"
-          yes | sdkmanager --licenses >/dev/null || true
-          sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Prepare www
         run: |
